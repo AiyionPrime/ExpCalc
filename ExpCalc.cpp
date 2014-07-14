@@ -7,8 +7,8 @@
 #include <conio.h>
 
 // author: Aiyion Prime
-// lastedit: 25.02.12 14:22
-// v1.5.0
+// lastedit: 28.02.12 19:36
+// v1.6.0
 
 
 using namespace std;
@@ -33,84 +33,20 @@ int wait ( int seconds )
   
 }
 
-void expcost(int exp)
-{
-    gotoxy (0,7);
-    cout << exp << " Erfahrungspunkte";
-}
-
-void raster()
-{
-    int i; //Counter
-    gotoxy(0,3);
-    cout << "--------------------------------------------------------------------------------";
-    
-    for(i=4;i<25;i++)
-    {
-        gotoxy(19,i);
-        cout << "|";
-    }
-}
-
-void stepcoord(int step, int Block)
+void spinstep(int akt, int step)
 {
     int i=0; //Counter
-    int j=0; //Counter
+    int Position [18] [2];
     
-    int position [4] [6] [2];
-    
-    // Initialisierung Block 0
-    j=6;
-    for(i=0;i<6;i++)
+    for(i=0;i<18;i++)
     {
-        j=j-1;
-        
-        position [0] [i] [0] = (88-(i*8)); // X Variable
-        position [0] [i] [1] = (7); // Y Variable
+        Position [i] [0]=0;
     }
-    
-    // Initialisierung Block 1
-    j=6;
-    for(i=0;i<6;i++)
+    for(i=0;i<18;i++)
     {
-        j=j-1;
-        
-        position [1] [i] [0] = (j+26); // X Variable
-        position [1] [i] [1] = (i+7);  // Y Variable
+        Position [i] [1]=0;
     }
-    
-    // Initialisierung Block 2
-    j=6;
-    for(i=0;i<6;i++)
-    {
-        j=j-1;
-        
-        position [2] [i] [0] = (i+26); // X Variable
-        position [2] [i] [1] = (i+15); // Y Variable
-    }
-    
-    // Initialisierung Block 3
-    j=6;
-    for(i=0;i<6;i++)
-    {
-        j=j-1;
-        
-        position [3] [i] [0] = (40+(i*8)); // X Variable
-        position [3] [i] [1] = (21); // Y Variable
-    }
-    
-    
-    // Ausgabe Punkt einnehmen
-    
-    gotoxy((position [Block] [step] [0]),(position [Block] [step] [1]));
 }
-                
-    
-    
-    
-    
-
-
 
 void coutc(int color, char* output) //farbiges schreiben
 {
@@ -128,19 +64,12 @@ void startscreen()
     cout << "PrimeSoft presents:";
     wait(1);
     gotoxy(34, 5);
-    cout << "ExpCalc v1.5.0";
+    cout << "ExpCalc v1.6.0";
     wait(1);
     gotoxy(30, 7);
     cout << "Aiyion Prime - 2012- C";
     wait(2);
     system("cls");
-}
-
-void ergebnisausgabe(int lvl, int goal,int exp)
-{
-    cout << "Vom Level " << lvl << " bis zum Level " << goal << " werden " << exp << " Erfahrungspunkte benoetigt." << endl ;
-
-    cout << endl <<"Zur Neuberechnung r(estart) druecken. Pfeiltasten --> Mobwechsel." << endl;
 }
 
 int getKey()
@@ -372,10 +301,6 @@ int main(int argc, char *argv[])
     mob [16] [1] = 20000; //enderdragon Durchschnitt = 20000
     mob [16] [2] = 20000; //enderdragon max = 20000
     
-    
-    
-    
-    
     //Mob definition Ende
     
     startscreen();
@@ -514,9 +439,6 @@ int main(int argc, char *argv[])
     
     }while (key!=13);
     
-        
-    
-    
     system("cls");
     
     if(goal<lvl)
@@ -567,8 +489,6 @@ int main(int argc, char *argv[])
         err=err+1;
     }
     
-    
-    
     if (err>0)
     {
         cout << "Es wurde(n) bei der Eingabe der Level " << err << " Fehler gemacht." << endl << "Geben sie reelle und realistische Werte ein." << endl ;
@@ -580,12 +500,10 @@ int main(int argc, char *argv[])
         {
         system("cls");
         exp=experiencecalc(lvl, goal);
-        
+        cout << "Vom Level " << lvl << " bis zum Level " << goal << " werden " << exp << " Erfahrungspunkte benoetigt." << endl ;
     
-        ergebnisausgabe(lvl, goal, exp);
+        cout << endl <<"Zur Neuberechnung r(estart) druecken.";
         
-        
-        // Festlegung, welcher Mob an welcher Position Ausgegeben wird
         if (akt>16)
         {
             akt=akt-17;
@@ -594,8 +512,6 @@ int main(int argc, char *argv[])
         {
             akt=akt+17;
         }
-        
-        
         
         aktvor=akt-1;
         aktnach=akt+1;
@@ -609,24 +525,15 @@ int main(int argc, char *argv[])
             aktnach=aktnach-17;
         }
         
-        aktvorvor=aktvor-1;
-        aktnachnach=aktnach+1;
-        
-        if (aktvorvor<0)
-        {
-            aktvorvor=aktvorvor+17;
-        }
-        
-        if (aktnachnach>16)
-        {
-            aktnachnach=aktnachnach-17;
-        }
-        // Ende der Festlegung
-        
-        
+        gotoxy(0,3);
         // ab hier wird das Raster gezeichnet
-        raster();
-        
+        cout << "--------------------------------------------------------------------------------";
+    
+        for(i=4;i<25;i++)
+        {
+            gotoxy(19,i);
+            cout << "|";
+        }
         
         // ab hier wird der aktuell sichtbare Mob eingeblendet
         gotoxy(25, 14);
@@ -645,36 +552,7 @@ int main(int argc, char *argv[])
         key=getKey();
         if (key == 592)
         {
-            for(i=1;i<7;i++)
-            {
-                wait(1);
-                system("cls");
-                
-                ergebnisausgabe(lvl, goal, exp);
-                raster();
-                
-                
-                stepcoord(i,0); //Sprung zu Koordinaten, an denen aktvorvor ausgegeben werden soll (zukünftiges aktvor)
-                mobname(aktnachnach);
-                
-                stepcoord(i,1); //Sprung zu Koordinaten, an denen aktvor ausgegeben werden soll (zukünftiges akt)
-                mobname(aktnach);
-                
-                stepcoord(i,2); //Sprung zu Koordinaten, an denen akt ausgegeben werden soll (zukünftiges aktnach)
-                mobname(akt);
-                
-                stepcoord(i,3); //Sprung zu Koordinaten, an denen aktnach ausgegeben werden soll (zukünftiges aktnachnach)
-                mobname(aktvor);
-                
-                expcost(exp);
-                
-                
-            }
-            wait(1);    
-                
-            
             akt=akt+1;
-            
         }
         if (key == 584)
         {
@@ -685,6 +563,18 @@ int main(int argc, char *argv[])
         
         
     }
+    /*
+    gotoxy(25,14);
+    cout << "Böses Monster akt";
+    gotoxy(45,14);
+    cout << "Werte Mob akt";
+    
+    gotoxy(32,7);
+    coutc(8,"Böses Monster akt-1");
+    
+    gotoxy(32,21);
+    coutc(8,"Böses Monster akt+1");
+    */
     
     if (key!=114)
     {
@@ -696,7 +586,4 @@ int main(int argc, char *argv[])
         return EXIT_SUCCESS;
     }
 }
-    
-    
-    
 }
