@@ -1,3 +1,4 @@
+v1.1
 #1
 	Bei zu großen Differenzen wurde der ausgegebene Wert zufällig.
 		*liegt vermutlich an Überschreitung der Variablengröße des Erfahrungswertes der ausgegeben wird.
@@ -11,3 +12,8 @@
 		 wie viele Stellen eingegeben werden, steht eine Ziffer mehr oder weniger bei der Leveleingabe für
 		 Millionen/Milliarden/Billionen ... neue Berechnung die Nötig sind.
 - behoben durch Eingrenzung der Eingangswerte
+v1.2
+#1
+	Eingabe eines Zeichens anstelle einer Ziffer führt zum Programmfehler.
+		*Das Programm versucht ein Zeichen als Ziffer zu Interpretieren
+- behoben durch relativ umfangreich Abfang-Routine und Verwendung des getch Befehls statt cin.

@@ -7,8 +7,8 @@
 #include <conio.h>
 
 // author: Aiyion Prime
-// lastedit: 20.02.12 23:14
-// v1.1
+// lastedit: 21.02.12 18:16
+// v1.2
 
 
 using namespace std;
@@ -36,12 +36,27 @@ void startscreen()
     cout << "PrimeSoft presents:";
     wait(1);
     gotoxy(34, 5);
-    cout << "ExpCalc v1.1";
+    cout << "ExpCalc v1.2";
     wait(1);
     gotoxy(30, 7);
     cout << "Aiyion Prime - 2012- C";
     wait(2);
     system("cls");
+}
+
+int getKey()
+{
+    int result=getch();
+    if(result==0)
+    {
+        result=256+getch();
+    }
+    if (result==224)
+    {
+        result=512+getch();
+    }
+      
+   return result;
 }
 
 int experiencecalc (int lvl, int goal)
@@ -80,6 +95,9 @@ int main(int argc, char *argv[])
     int exp;
     int getchvar;
     int err=0; // Error Variable für jeden Fehler, der Durch die Eingabe von unmöglichen Leveln entsteht, wir err=err+1
+    int secondtry=0; // wird statt einer Zahl ein Buchstabe eingegeben wird die Levelabfrage Wiederholt (secondtry wird 1)
+    int key=0; //Variable, in der Der "Ascii" Wert einer Taste gespeichert wird
+    int i; //Counter
     
     
     startscreen();
@@ -93,12 +111,90 @@ int main(int argc, char *argv[])
     getchvar=0;
     
     
-    info();
-      
-    cout << "Aktueller Level:";
-    cin >> lvl;
-    cout << endl << "Zu erreichender Level:";
-    cin >> goal;
+    info(); 
+    
+    i=0;
+    do
+    {
+        i=i+1;
+    do
+    {
+    secondtry=0;
+    system("cls");
+    
+    if(i>=5)
+    {
+        cout << "Ihr aktueller angegebener Level liegt ueber 10000" << endl;
+        cout << "Ein Berechnung eines so hohen Levels wuerde sehr lange dauern." << endl;
+        cout << "Geben sie einen realistischen Level ein." <<endl;
+        system("pause");
+        system("cls");
+        lvl=0;
+        i=0;
+    }
+    cout << "Aktueller Level:" << endl;
+    if (lvl!=0)
+        {
+            cout << lvl << endl;
+        }
+    key=getKey();
+    if((key<48 || key>57) && key!=13)
+    {
+        cout << endl << endl << "Bitte gib nur Zahlen ein." << endl;
+        system("pause");
+        secondtry=1;
+        key=0;
+    }
+    } while (secondtry==1);
+    if(key!=13)
+    {
+    key=key-48; //"Umformung" vom Ascii Wert zum eigentlichen Ziffern Wert
+    lvl=lvl*10+key; //Anhängen der neuen Ziffer an die Ursprüngliche Zahl
+    }
+    }while (key!=13);
+    
+    i=0;
+    do
+    {
+        i=i+1;
+    do
+    {
+    secondtry=0;
+    system("cls");
+    
+    if(i>=5)
+    {
+        cout << "Ihr aktueller angegebener Level liegt ueber 10000" << endl;
+        cout << "Ein Berechnung eines so hohen Levels wuerde sehr lange dauern." << endl;
+        cout << "Geben sie einen realistischen Level ein." <<endl;
+        system("pause");
+        system("cls");
+        goal=0;
+        i=0;
+    }
+    cout << "Zu erreichender Level:" << endl;
+    if (goal!=0)
+        {
+            cout << goal << endl;
+        }
+    key=getKey();
+    if((key<48 || key>57) && key!=13)
+    {
+        cout << endl << endl << "Bitte gib nur Zahlen ein." << endl;
+        system("pause");
+        secondtry=1;
+        key=0;
+    }
+    } while (secondtry==1);
+    if(key!=13)
+    {
+    key=key-48; //"Umformung" vom Ascii Wert zum eigentlichen Ziffern Wert
+    goal=goal*10+key; //Anhängen der neuen Ziffer an die Ursprüngliche Zahl
+    }
+    }while (key!=13);
+    
+        
+    
     
     system("cls");
     
