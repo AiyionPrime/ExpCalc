@@ -7,8 +7,8 @@
 #include <conio.h>
 
 // author: Aiyion Prime
-// lastedit: 21.02.12 18:55
-// v1.3
+// lastedit: 22.02.12 19:05
+// v1.4.1
 
 
 using namespace std;
@@ -36,7 +36,7 @@ void startscreen()
     cout << "PrimeSoft presents:";
     wait(1);
     gotoxy(34, 5);
-    cout << "ExpCalc v1.3";
+    cout << "ExpCalc v1.4.1";
     wait(1);
     gotoxy(30, 7);
     cout << "Aiyion Prime - 2012- C";
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
     i=0;
     do
     {
-        i=i+1;
+        
     do
     {
     secondtry=0;
@@ -133,30 +133,42 @@ int main(int argc, char *argv[])
         i=0;
     }
     cout << "Aktueller Level:" << endl;
-    if (lvl!=0 || i>0)
+    if (lvl!=0 && i>0)
         {
             cout << lvl << endl;
         }
     key=getKey();
-    if((key<48 || key>57) && key!=13)
+    if((key<48 || key>57) && key!=13 && key != 8)
     {
         cout << endl << endl << "Bitte gib nur Zahlen ein." << endl;
         system("pause");
         secondtry=1;
         key=0;
     }
+    
     } while (secondtry==1);
-    if(key!=13)
+    if (key==8)
+    {
+        if (i>0)
+        {
+        i=i-1;
+        lvl=lvl / 10;
+        }
+    }
+    
+    if(key!=13 && key!=8)
     {
     key=key-48; //"Umformung" vom Ascii Wert zum eigentlichen Ziffern Wert
     lvl=lvl*10+key; //Anhängen der neuen Ziffer an die Ursprüngliche Zahl
+    i=i+1;
     }
+    
     }while (key!=13);
     
     i=0;
     do
     {
-        i=i+1;
+        
     do
     {
     secondtry=0;
@@ -173,24 +185,36 @@ int main(int argc, char *argv[])
         i=0;
     }
     cout << "Zu erreichender Level:" << endl;
-    if (goal!=0 || i>0)
+    if (goal!=0 && i>0)
         {
             cout << goal << endl;
         }
     key=getKey();
-    if((key<48 || key>57) && key!=13)
+    if((key<48 || key>57) && key!=13 && key != 8)
     {
         cout << endl << endl << "Bitte gib nur Zahlen ein." << endl;
         system("pause");
         secondtry=1;
         key=0;
     }
+    
     } while (secondtry==1);
-    if(key!=13)
+    if (key==8)
+    {
+        if (i>0)
+        {
+        i=i-1;
+        goal=goal / 10;
+        }
+    }
+    
+    if(key!=13 && key!=8)
     {
     key=key-48; //"Umformung" vom Ascii Wert zum eigentlichen Ziffern Wert
     goal=goal*10+key; //Anhängen der neuen Ziffer an die Ursprüngliche Zahl
+    i=i+1;
     }
+    
     }while (key!=13);
     
         
@@ -228,7 +252,7 @@ int main(int argc, char *argv[])
     }
     if(lvl>=200)
     {
-        cout << "Warnung: Sie sollten Ihre Erfahrungslevel erst aufbrauchen, bevor sie weitere aufbauen." << endl;
+        cout << "Warnung: Sie sollten Ihre Erfahrungslevel erst aufbrauchen,"<< endl <<"bevor sie weitere aufbauen." << endl;
         system("Pause");
         system("cls");
     }
