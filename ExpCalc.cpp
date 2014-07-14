@@ -7,8 +7,8 @@
 #include <conio.h>
 
 // author: Aiyion Prime
-// lastedit: 21.02.12 18:16
-// v1.2
+// lastedit: 21.02.12 18:55
+// v1.3
 
 
 using namespace std;
@@ -36,7 +36,7 @@ void startscreen()
     cout << "PrimeSoft presents:";
     wait(1);
     gotoxy(34, 5);
-    cout << "ExpCalc v1.2";
+    cout << "ExpCalc v1.3";
     wait(1);
     gotoxy(30, 7);
     cout << "Aiyion Prime - 2012- C";
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
         i=0;
     }
     cout << "Aktueller Level:" << endl;
-    if (lvl!=0)
+    if (lvl!=0 || i>0)
         {
             cout << lvl << endl;
         }
@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
         i=0;
     }
     cout << "Zu erreichender Level:" << endl;
-    if (goal!=0)
+    if (goal!=0 || i>0)
         {
             cout << goal << endl;
         }
