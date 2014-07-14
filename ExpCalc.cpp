@@ -7,11 +7,15 @@
 #include <conio.h>
 
 // author: Aiyion Prime
-// lastedit: 22.02.12 19:59
-// v1.4.2
+// lastedit: 25.02.12 14:22
+// v1.5.0
 
 
 using namespace std;
+
+enum Colors { blue=1, green, cyan, red, purple, yellow, grey, dgrey, hblue, hgreen, hred, hpurple, hyellow, hwhite };
+enum mobs {chicken=0, cow, mooshroom, pig, sheep, squid, enderman, wolf, zombiepigman, blaze, creeper, ghast, silverfish, skeleton, spider, zombie, enderdragon};
+
 
 void gotoxy(int x, int y)
 {
@@ -29,6 +33,94 @@ int wait ( int seconds )
   
 }
 
+void expcost(int exp)
+{
+    gotoxy (0,7);
+    cout << exp << " Erfahrungspunkte";
+}
+
+void raster()
+{
+    int i; //Counter
+    gotoxy(0,3);
+    cout << "--------------------------------------------------------------------------------";
+    
+    for(i=4;i<25;i++)
+    {
+        gotoxy(19,i);
+        cout << "|";
+    }
+}
+
+void stepcoord(int step, int Block)
+{
+    int i=0; //Counter
+    int j=0; //Counter
+    
+    int position [4] [6] [2];
+    
+    // Initialisierung Block 0
+    j=6;
+    for(i=0;i<6;i++)
+    {
+        j=j-1;
+        
+        position [0] [i] [0] = (88-(i*8)); // X Variable
+        position [0] [i] [1] = (7); // Y Variable
+    }
+    
+    // Initialisierung Block 1
+    j=6;
+    for(i=0;i<6;i++)
+    {
+        j=j-1;
+        
+        position [1] [i] [0] = (j+26); // X Variable
+        position [1] [i] [1] = (i+7);  // Y Variable
+    }
+    
+    // Initialisierung Block 2
+    j=6;
+    for(i=0;i<6;i++)
+    {
+        j=j-1;
+        
+        position [2] [i] [0] = (i+26); // X Variable
+        position [2] [i] [1] = (i+15); // Y Variable
+    }
+    
+    // Initialisierung Block 3
+    j=6;
+    for(i=0;i<6;i++)
+    {
+        j=j-1;
+        
+        position [3] [i] [0] = (40+(i*8)); // X Variable
+        position [3] [i] [1] = (21); // Y Variable
+    }
+    
+    
+    // Ausgabe Punkt einnehmen
+    
+    gotoxy((position [Block] [step] [0]),(position [Block] [step] [1]));
+}
+                
+    
+    
+    
+    
+
+
+
+void coutc(int color, char* output) //farbiges schreiben
+{
+    HANDLE handle= GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute( handle, color);
+    cout<< output;
+    color=15;
+    SetConsoleTextAttribute( handle, color);
+}
+
 
 void startscreen()
 {
@@ -36,12 +128,19 @@ void startscreen()
     cout << "PrimeSoft presents:";
     wait(1);
     gotoxy(34, 5);
-    cout << "ExpCalc v1.4.2";
+    cout << "ExpCalc v1.5.0";
     wait(1);
     gotoxy(30, 7);
     cout << "Aiyion Prime - 2012- C";
     wait(2);
     system("cls");
+}
+
+void ergebnisausgabe(int lvl, int goal,int exp)
+{
+    cout << "Vom Level " << lvl << " bis zum Level " << goal << " werden " << exp << " Erfahrungspunkte benoetigt." << endl ;
+
+    cout << endl <<"Zur Neuberechnung r(estart) druecken. Pfeiltasten --> Mobwechsel." << endl;
 }
 
 int getKey()
@@ -72,7 +171,103 @@ int experiencecalc (int lvl, int goal)
     }
     return exp;
 }
-        
+
+void mobname(int aktmob)
+{
+    switch(aktmob)
+    {
+        case 0:
+            {
+                cout << "Huhn";
+                break;
+            }
+        case 1:
+            {
+                cout << "Kuh";
+                break;
+            }
+        case 2:
+            {
+                cout << "Pilzkuh";
+                break;
+            }
+        case 3:
+            {
+                cout << "Schwein";
+                break;
+            }
+        case 4:
+            {
+                cout << "Schaf";
+                break;
+            }
+        case 5:
+            {
+                cout << "Tintenfisch";
+                break;
+            }
+        case 6:
+            {
+                cout << "Enderman";
+                break;
+            }
+        case 7:
+            {
+                cout << "Wolf";
+                break;
+            }
+        case 8:
+            {
+                cout << "Zombie Pigman";
+                break;
+            }
+        case 9:
+            {
+                cout << "Blaze";
+                break;
+            }
+        case 10:
+            {
+                cout << "Creeper";
+                break;
+            }
+        case 11:
+            {
+                cout << "Ghast";
+                break;
+            }
+        case 12:
+            {
+                cout << "Silverfish";
+                break;
+            }
+        case 13:
+            {
+                cout << "Skelett";
+                break;
+            }
+        case 14:
+            {
+                cout << "Spinne";
+                break;
+            }
+        case 15:
+            {
+                cout << "Zombie";
+                break;
+            }
+        case 16:
+            {
+                cout << "Enderdrache";
+                break;
+            }
+        default:
+            {
+                cout << "Error.";
+            }
+    }
+}
+
 void info ()
 {
     system("cls");
@@ -98,7 +293,90 @@ int main(int argc, char *argv[])
     int secondtry=0; // wird statt einer Zahl ein Buchstabe eingegeben wird die Levelabfrage Wiederholt (secondtry wird 1)
     int key=0; //Variable, in der Der "Ascii" Wert einer Taste gespeichert wird
     int i; //Counter
+    int akt=0; //Aktueller Mob (Im roll screen)
+    int aktvor=0; //Mob vor dem aktuellen mob (im roll screen)
+    int aktvorvor=0; //nonused
+    int aktnach=0; //Mob nach dem aktuellen mob
+    int aktnachnach=0; //nonused
+    int div=0;
     
+    int mob [17] [3];
+    
+    //Mob exp definition
+    
+    mob [0] [0] = 1; //huhn min = 1
+    mob [0] [1] = 2; //huhn Durchschnitt = 2
+    mob [0] [2] = 3; //huhn max = 3
+    
+    mob [1] [0] = 1; //Kuh min = 1
+    mob [1] [1] = 2; //Kuh Durchschnitt = 2
+    mob [1] [2] = 3; //Kuh max = 3
+    
+    mob [2] [0] = 1; //mooshroom min = 1
+    mob [2] [1] = 2; //mooshroom Durchschnitt = 2
+    mob [2] [2] = 3; //mooshroom max = 3
+    
+    mob [3] [0] = 1; //pig min = 1
+    mob [3] [1] = 2; //pig Durchschnitt = 2
+    mob [3] [2] = 3; //pig max = 3
+    
+    mob [4] [0] = 1; //sheep min = 1
+    mob [4] [1] = 2; //sheep Durchschnitt = 2
+    mob [4] [2] = 3; //sheep max = 3
+    
+    mob [5] [0] = 1; //squid min = 1
+    mob [5] [1] = 2; //squid Durchschnitt = 2
+    mob [5] [2] = 3; //squid max = 3
+    
+    mob [6] [0] = 5; //Enderman min = 5
+    mob [6] [1] = 5; //Enderman Durchschnitt = 5
+    mob [6] [2] = 5; //Enderman max = 5
+    
+    mob [7] [0] = 1; //wolf min = 1
+    mob [7] [1] = 2; //wolf Durchschnitt = 2
+    mob [7] [2] = 3; //wolf max = 3
+    
+    mob [8] [0] = 5; //zombiepigman min = 5
+    mob [8] [1] = 5; //zombiepigman Durchschnitt = 5
+    mob [8] [2] = 5; //zombiepigman max = 5
+    
+    mob [9] [0] = 10; //blaze min = 10
+    mob [9] [1] = 10; //blaze Durchschnitt = 10
+    mob [9] [2] = 10; //blaze max = 10
+    
+    mob [10] [0] = 5; //creeper min = 5
+    mob [10] [1] = 5; //creeper Durchschnitt = 5
+    mob [10] [2] = 5; //creeper max = 5
+    
+    mob [11] [0] = 5; //ghast min = 5
+    mob [11] [1] = 5; //ghast Durchschnitt = 5
+    mob [11] [2] = 5; //ghast max = 5
+    
+    mob [12] [0] = 5; //silverfish min = 5
+    mob [12] [1] = 5; //silverfish Durchschnitt = 5
+    mob [12] [2] = 5; //silverfish max = 5
+    
+    mob [13] [0] = 3; //skeleton min = 3
+    mob [13] [1] = 3; //skeleton Durchschnitt = 3
+    mob [13] [2] = 3; //skeleton max = 3
+    
+    mob [14] [0] = 5; //spider min = 5
+    mob [14] [1] = 5; //spider Durchschnitt = 5
+    mob [14] [2] = 5; //spider max = 5
+    
+    mob [15] [0] = 5; //Zombie min = 5
+    mob [15] [1] = 5; //Zombie Durchschnitt = 5
+    mob [15] [2] = 5; //Zombie max = 5
+    
+    mob [16] [0] = 20000; //enderdragon min = 20000
+    mob [16] [1] = 20000; //enderdragon Durchschnitt = 20000
+    mob [16] [2] = 20000; //enderdragon max = 20000
+    
+    
+    
+    
+    
+    //Mob definition Ende
     
     startscreen();
     
@@ -290,29 +568,131 @@ int main(int argc, char *argv[])
     }
     
     
-    if (err==0)
-    {
-    exp=experiencecalc(lvl, goal);
-    cout << "Vom Level " << lvl << " bis zum Level " << goal << " werden " << exp << " Erfahrungspunkte benoetigt." << endl;
     
-    }
     if (err>0)
     {
-        cout << "Es wurde(n) bei der Eingabe der Level " << err << " Fehler gemacht." << endl << "Geben sie reelle und realistische Werte ein." << endl << endl;
+        cout << "Es wurde(n) bei der Eingabe der Level " << err << " Fehler gemacht." << endl << "Geben sie reelle und realistische Werte ein." << endl ;
+          
+    }
+    if (err==0)
+    {
+        do
+        {
+        system("cls");
+        exp=experiencecalc(lvl, goal);
+        
+    
+        ergebnisausgabe(lvl, goal, exp);
+        
+        
+        // Festlegung, welcher Mob an welcher Position Ausgegeben wird
+        if (akt>16)
+        {
+            akt=akt-17;
+        }
+        if (akt<0)
+        {
+            akt=akt+17;
+        }
+        
+        
+        
+        aktvor=akt-1;
+        aktnach=akt+1;
+        
+        if (aktvor<0)
+        {
+            aktvor=aktvor+17;
+        }
+        if (aktnach>16)
+        {
+            aktnach=aktnach-17;
+        }
+        
+        aktvorvor=aktvor-1;
+        aktnachnach=aktnach+1;
+        
+        if (aktvorvor<0)
+        {
+            aktvorvor=aktvorvor+17;
+        }
+        
+        if (aktnachnach>16)
+        {
+            aktnachnach=aktnachnach-17;
+        }
+        // Ende der Festlegung
+        
+        
+        // ab hier wird das Raster gezeichnet
+        raster();
+        
+        
+        // ab hier wird der aktuell sichtbare Mob eingeblendet
+        gotoxy(25, 14);
+        mobname(akt); //Funktion gibt an dieser Stelle den Mobnamen abhängig von akt aus
+        gotoxy(45,14);
+        
+        cout << " EP (ugf): " << mob [akt] [1] << " | Mobs: " << (exp/mob[akt][1]+1) << endl; // Gibt EP des akt Mobs aus und die Anzahl der Mobns, die man braucht, um Das Ziellevel zuerreichen (Details)
+        
+        // hier werden die beiden halbtransparenten Mobs angezeigt (ohne Details)
+        gotoxy(32,21);
+        mobname(aktvor);
+        
+        gotoxy(32,7);
+        mobname(aktnach);
+        
+        key=getKey();
+        if (key == 592)
+        {
+            for(i=1;i<7;i++)
+            {
+                wait(1);
+                system("cls");
+                
+                ergebnisausgabe(lvl, goal, exp);
+                raster();
+                
+                
+                stepcoord(i,0); //Sprung zu Koordinaten, an denen aktvorvor ausgegeben werden soll (zukünftiges aktvor)
+                mobname(aktnachnach);
+                
+                stepcoord(i,1); //Sprung zu Koordinaten, an denen aktvor ausgegeben werden soll (zukünftiges akt)
+                mobname(aktnach);
+                
+                stepcoord(i,2); //Sprung zu Koordinaten, an denen akt ausgegeben werden soll (zukünftiges aktnach)
+                mobname(akt);
+                
+                stepcoord(i,3); //Sprung zu Koordinaten, an denen aktnach ausgegeben werden soll (zukünftiges aktnachnach)
+                mobname(aktvor);
+                
+                expcost(exp);
+                
+                
+            }
+            wait(1);    
+                
+            
+            akt=akt+1;
+            
+        }
+        if (key == 584)
+        {
+            akt=akt-1;
+        }
+        
+        }while(key==584 || key==592);
         
         
     }
-    cout << endl << "Zur Neuberechnung r(estart) druecken. Jede andere Taste beendet das Programm." << endl;
     
-    getchvar = getch();
-    system("cls");
-    
-    if (getchvar!=114)
+    if (key!=114)
     {
+        system("cls");
         cout << "Aiyion Prime.";
         wait(1);
         
-        
+     
         return EXIT_SUCCESS;
     }
 }
