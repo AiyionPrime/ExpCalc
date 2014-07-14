@@ -7,8 +7,8 @@
 #include <conio.h>
 
 // author: Aiyion Prime
-// lastedit: 22.02.12 19:05
-// v1.4.1
+// lastedit: 22.02.12 19:59
+// v1.4.2
 
 
 using namespace std;
@@ -36,7 +36,7 @@ void startscreen()
     cout << "PrimeSoft presents:";
     wait(1);
     gotoxy(34, 5);
-    cout << "ExpCalc v1.4.1";
+    cout << "ExpCalc v1.4.2";
     wait(1);
     gotoxy(30, 7);
     cout << "Aiyion Prime - 2012- C";
@@ -124,16 +124,16 @@ int main(int argc, char *argv[])
     
     if(i>=5)
     {
-        cout << "Ihr aktueller angegebener Level liegt ueber 10000" << endl;
+        cout << "Ihr aktueller angegebener Level liegt im 5 stelligen Bereich" << endl;
         cout << "Ein Berechnung eines so hohen Levels wuerde sehr lange dauern." << endl;
-        cout << "Geben sie einen realistischen Level ein." <<endl;
+        cout << "Geben sie einen realistischen Level ein." << endl;
         system("pause");
         system("cls");
         lvl=0;
         i=0;
     }
     cout << "Aktueller Level:" << endl;
-    if (lvl!=0 && i>0)
+    if (i>0)
         {
             cout << lvl << endl;
         }
@@ -156,13 +156,22 @@ int main(int argc, char *argv[])
         }
     }
     
-    if(key!=13 && key!=8)
+    if(key!=13 && key!=8 && key!=48)
     {
     key=key-48; //"Umformung" vom Ascii Wert zum eigentlichen Ziffern Wert
     lvl=lvl*10+key; //Anhängen der neuen Ziffer an die Ursprüngliche Zahl
     i=i+1;
     }
-    
+    if(key==48 && i>0)
+    {
+        key=key-48; //"Umformung" vom Ascii Wert zum eigentlichen Ziffern Wert
+        lvl=lvl*10+key; //Anhängen der neuen Ziffer an die Ursprüngliche Zahl
+        i=i+1;
+    }
+    if(key==48 && i==0)
+    {
+        //soll nichts machen
+    }
     }while (key!=13);
     
     i=0;
@@ -176,16 +185,16 @@ int main(int argc, char *argv[])
     
     if(i>=5)
     {
-        cout << "Ihr aktueller angegebener Level liegt ueber 10000" << endl;
+        cout << "Ihr aktueller angegebener Level liegt im 5 stelligen Bereich" << endl;
         cout << "Ein Berechnung eines so hohen Levels wuerde sehr lange dauern." << endl;
-        cout << "Geben sie einen realistischen Level ein." <<endl;
+        cout << "Geben sie einen realistischen Level ein." << endl;
         system("pause");
         system("cls");
         goal=0;
         i=0;
     }
     cout << "Zu erreichender Level:" << endl;
-    if (goal!=0 && i>0)
+    if (i>0)
         {
             cout << goal << endl;
         }
@@ -208,11 +217,21 @@ int main(int argc, char *argv[])
         }
     }
     
-    if(key!=13 && key!=8)
+    if(key!=13 && key!=8 && key!=48)
     {
     key=key-48; //"Umformung" vom Ascii Wert zum eigentlichen Ziffern Wert
     goal=goal*10+key; //Anhängen der neuen Ziffer an die Ursprüngliche Zahl
     i=i+1;
+    }
+    if(key==48 && i>0)
+    {
+        key=key-48; //"Umformung" vom Ascii Wert zum eigentlichen Ziffern Wert
+        goal=goal*10+key; //Anhängen der neuen Ziffer an die Ursprüngliche Zahl
+        i=i+1;
+    }
+    if(key==48 && i==0)
+    {
+        //soll nichts machen
     }
     
     }while (key!=13);
