@@ -1,0 +1,13 @@
+#1
+	Bei zu großen Differenzen wurde der ausgegebene Wert zufällig.
+		*liegt vermutlich an Überschreitung der Variablengröße des Erfahrungswertes der ausgegeben wird.
+		 Dieser Wert steigt exponentiell an.
+- behoben durch Eingrenzung der Eingangswerte
+
+#2
+	Bei (unrealistisch) großen Werten im 1000000+ Bereich dauert die Berechnung Ewigkeiten.
+		*liegt daran, dass für jeden Level eine Berechnung durchgeführt wird.
+		 Wird (zu Testzwecken) eine riesige Zahl eingegeben, und nicht darauch geachtet
+		 wie viele Stellen eingegeben werden, steht eine Ziffer mehr oder weniger bei der Leveleingabe für
+		 Millionen/Milliarden/Billionen ... neue Berechnung die Nötig sind.
+- behoben durch Eingrenzung der Eingangswerte
